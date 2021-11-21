@@ -1,0 +1,19 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5433,
+  "username": "manga",
+  "password": "manga",
+  "database": "manga_reader",
+  "entities": [
+    "/home/ineoo/github/ineoo/manga-reader-back/src/**/*.entity{.ts,.js}"
+  ],
+  "migrationsTableName": "migration",
+  "migrations": [
+    "/home/ineoo/github/ineoo/manga-reader-back/srcsrc/migration/*.ts"
+  ],
+  "cli": {
+    "migrationsDir": "src/migration"
+  },
+  "ssl": false
+}
