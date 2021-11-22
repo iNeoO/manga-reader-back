@@ -30,6 +30,7 @@ export class MangaService {
             id: true,
             name: true,
             coverPageId: true,
+            number: true,
             chaptersRead: {
               where: {
                 userId,
@@ -39,6 +40,9 @@ export class MangaService {
                 lastPageReadId: true,
               },
             },
+          },
+          orderBy: {
+            number: 'desc',
           },
         },
       },
@@ -53,6 +57,7 @@ export class MangaService {
         const chapterFormated: ChapterFormated = {
           id: chapter.id,
           name: chapter.name,
+          number: chapter.number,
           coverPageId: chapter.coverPageId,
           isRead: chapter.chaptersRead[0]?.isRead || false,
           lastPageReadId: chapter.chaptersRead[0]?.lastPageReadId || null,

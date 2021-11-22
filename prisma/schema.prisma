@@ -11,7 +11,7 @@ model Page {
   id String @id @default(cuid())
   name String
   path String
-  numero Int
+  number Int
   chapter Chapter @relation(fields: [chapterId], references: [id])
   chapterId  String
   chaptersRead ChapterRead[]
@@ -24,6 +24,7 @@ model Chapter {
   id String @id @default(cuid())
   name String
   manga Manga @relation(fields: [mangaId], references: [id])
+  number Int
   mangaId  String
   pages Page[]
   chaptersRead ChapterRead[]

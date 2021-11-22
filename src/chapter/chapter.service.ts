@@ -17,6 +17,7 @@ export class ChapterService {
       select: {
         id: true,
         name: true,
+        number: true,
         coverPageId: true,
         chaptersRead: {
           where: {
@@ -31,10 +32,10 @@ export class ChapterService {
           select: {
             id: true,
             name: true,
-            numero: true,
+            number: true,
           },
           orderBy: {
-            numero: 'asc',
+            number: 'asc',
           },
         },
       },
@@ -48,6 +49,7 @@ export class ChapterService {
     const chapterFormated = {
       id: chapter.id,
       name: chapter.name,
+      number: chapter.number,
       coverPageId: chapter.coverPageId,
       isRead: chapter.chaptersRead[0]?.isRead || false,
       lastPageReadId: chapter.chaptersRead[0]?.lastPageReadId || null,

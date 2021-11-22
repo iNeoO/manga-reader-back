@@ -13,7 +13,7 @@ async function main(name: string, path: string) {
   const directoryName = path.split('/').pop();
   for (const [chapterIndex, chapterName] of chapters.entries()) {
     const chapter = await prisma.chapter.create({
-      data: { name: chapterName, mangaId: manga.id },
+      data: { name: chapterName, mangaId: manga.id, number: chapterIndex + 1 },
       select: { id: true },
     });
     const pages = await readdir(`${path}/${chapterName}`);
@@ -22,7 +22,7 @@ async function main(name: string, path: string) {
         data: {
           name: pageName,
           path: `${directoryName}/${chapterName}/${pageName}`,
-          numero: pageIndex + 1,
+          number: pageIndex + 1,
           chapterId: chapter.id,
         },
       });

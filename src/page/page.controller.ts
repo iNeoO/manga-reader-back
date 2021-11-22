@@ -7,6 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { createReadStream } from 'fs';
+import * as sharp from 'sharp';
 import { join } from 'path';
 import { PageService } from './page.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -31,7 +32,10 @@ export class PageController {
   async findOneMinified(@Param('id') id: string): Promise<StreamableFile> {
     const page = await this.pageService.getPage({ id });
     try {
-      const file = createReadStream(join(process.env.CDN_PATH, page.path));
+      const file = await sharp(join(process.env.CDN_PATH, page.path))
+        .resize(200)
+        .png()
+        .toBuffer();
       return new StreamableFile(file);
     } catch (error) {
       throw new NotFoundException('Image not found.');
