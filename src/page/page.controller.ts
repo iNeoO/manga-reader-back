@@ -33,7 +33,7 @@ export class PageController {
     const page = await this.pageService.getPage({ id });
     try {
       const file = await sharp(join(process.env.CDN_PATH, page.path))
-        .resize(200)
+        .resize(50)
         .png()
         .toBuffer();
       return new StreamableFile(file);
