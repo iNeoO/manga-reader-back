@@ -9,10 +9,12 @@ export type ChapterWithPages = ChapterWithoutMangaId & {
 };
 
 export type ChapterWithIsRead = ChapterWithoutMangaId & {
+  _count?: { pages: number };
   chaptersRead: ChapterReadWithOnlyData[];
 };
 
 export type ChapterFormated = ChapterWithoutMangaId & {
   isRead: boolean;
   lastPageReadId: string;
+  count?: number;
 };

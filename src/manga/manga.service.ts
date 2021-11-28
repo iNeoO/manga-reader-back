@@ -12,7 +12,15 @@ export class MangaService {
   constructor(private prisma: PrismaService) {}
 
   async getMangas(): Promise<Manga[]> {
-    return await this.prisma.manga.findMany();
+    return await this.prisma.manga.findMany({
+      include: {
+        _count: {
+          select: {
+            chapters: true,
+          },
+        },
+      },
+    });
   }
 
   async getManga(
@@ -26,11 +34,12 @@ export class MangaService {
         name: true,
         coverPageId: true,
         chapters: {
-          select: {
-            id: true,
-            name: true,
-            coverPageId: true,
-            number: true,
+          include: {
+            _count: {
+              select: {
+                pages: true,
+              },
+            },
             chaptersRead: {
               where: {
                 userId,
@@ -51,6 +60,7 @@ export class MangaService {
     if (!manga) {
       throw new NotFoundException('Manga not found.');
     }
+
     const mangaFormated: MangaWithChapters = {
       ...manga,
       chapters: manga.chapters.map((chapter: ChapterWithIsRead) => {
@@ -58,6 +68,7 @@ export class MangaService {
           id: chapter.id,
           name: chapter.name,
           number: chapter.number,
+          count: chapter._count.pages,
           coverPageId: chapter.coverPageId,
           isRead: chapter.chaptersRead[0]?.isRead || false,
           lastPageReadId: chapter.chaptersRead[0]?.lastPageReadId || null,
