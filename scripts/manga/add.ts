@@ -3,7 +3,7 @@ import { readdir } from 'fs/promises';
 
 const prisma = new PrismaClient();
 
-async function main(name: string, path: string) {
+const main = async (name: string, path: string) => {
   const manga = await prisma.manga.create({
     data: { name },
     select: { id: true },
@@ -40,7 +40,7 @@ async function main(name: string, path: string) {
       }
     }
   }
-}
+};
 
 export default (name: string, path: string) => {
   main(name, path)
@@ -50,4 +50,4 @@ export default (name: string, path: string) => {
     .finally(async () => {
       await prisma.$disconnect();
     });
-}
+};
