@@ -3,11 +3,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.chapterRead.deleteMany({});
   await prisma.page.deleteMany({});
   await prisma.chapter.deleteMany({});
   await prisma.manga.deleteMany({});
   await prisma.user.deleteMany({});
-  await prisma.chapterRead.deleteMany({});
 }
 
 export default () => {
