@@ -18,6 +18,8 @@ model Page {
   
   mangaCoverPage Manga? @relation("mangaCoverPage")
   chapterCoverPage Chapter? @relation("chapterCoverPage")
+
+  @@unique([chapterId, number])
 }
 
 model Chapter {
@@ -32,7 +34,8 @@ model Chapter {
   coverPageId String?
   coverPage Page? @relation("chapterCoverPage", fields: [coverPageId], references: [id])
   
-  @@unique([id, name])
+  @@unique([mangaId, name])
+  @@unique([mangaId, number])
 }
 
 model Manga {
@@ -61,6 +64,8 @@ model ChapterRead {
   chapterId  String
   page Page @relation(fields: [lastPageReadId], references: [id])
   lastPageReadId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   
   @@id([userId, chapterId])
 }

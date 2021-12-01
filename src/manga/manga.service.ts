@@ -47,6 +47,8 @@ export class MangaService {
               select: {
                 isRead: true,
                 lastPageReadId: true,
+                createdAt: true,
+                updatedAt: true,
               },
             },
             pages: {
