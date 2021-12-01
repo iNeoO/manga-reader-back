@@ -7,7 +7,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ChapterReadService } from './chapterRead.service';
-import { CreateChapterRead, DeleteChapterRead } from './type/chapterRead.type';
+import { CreateChapterReadDto } from './dto/create-chapterRead.dto';
+import { DeleteChapterRead } from './type/chapterRead.type';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ChapterService } from '../chapter/chapter.service';
 import { ChapterFormated } from '../chapter/type/chapter.type';
@@ -23,17 +24,17 @@ export class ChapterReadController {
   @Post()
   async create(
     @Request() req,
-    @Body() createChapterRead: CreateChapterRead,
+    @Body() createChapterReadDto: CreateChapterReadDto,
   ): Promise<ChapterFormated> {
     await this.chapterReadService.postChapterRead(
-      createChapterRead.chapterId,
-      createChapterRead.lastPageReadId,
+      createChapterReadDto.chapterId,
+      createChapterReadDto.lastPageReadId,
       req.user.userId,
-      createChapterRead.isRead,
+      createChapterReadDto.isRead,
     );
 
     return this.chapterService.getChapter(req.user.userId, {
-      id: createChapterRead.chapterId,
+      id: createChapterReadDto.chapterId,
     });
   }
 

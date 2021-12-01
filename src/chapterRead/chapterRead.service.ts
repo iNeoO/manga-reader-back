@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 import { ChapterRead } from '@prisma/client';
+import { throwError } from 'rxjs';
 
 @Injectable()
 export class ChapterReadService {
@@ -23,13 +25,15 @@ export class ChapterReadService {
       });
       return chapterRead;
     } catch (error) {
-      console.log(error);
-      return this.prisma.chapterRead.findFirst({
-        where: {
-          chapterId,
-          userId,
-        },
-      });
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        return this.prisma.chapterRead.findFirst({
+          where: {
+            chapterId,
+            userId,
+          },
+        });
+      }
+      throw error;
     }
   }
   async deleteChapterRead(
