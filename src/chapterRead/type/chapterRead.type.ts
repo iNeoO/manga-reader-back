@@ -15,3 +15,24 @@ export type ChapterReadWithOnlyData = Omit<
   ChapterReadModel,
   'chapterId' | 'userId'
 >;
+
+export type ChapterReadFormated = Omit<
+  ChapterReadWithOnlyData,
+  'lastPageReadId'
+> & {
+  page: {
+    id: string;
+    name: string;
+    number: number;
+  };
+  chapter: {
+    id: string;
+    name: string;
+    number: number;
+    nbPages: number;
+  };
+  manga: {
+    id: string;
+    name: string;
+  };
+};

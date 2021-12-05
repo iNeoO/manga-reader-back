@@ -7,7 +7,8 @@ async function main() {
   await prisma.page.deleteMany({});
   await prisma.chapter.deleteMany({});
   await prisma.manga.deleteMany({});
-  await prisma.user.deleteMany({});
+  // await prisma.user.deleteMany({});
+  console.log('All data purged');
 }
 
 export default () => {

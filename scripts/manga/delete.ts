@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 // import { MultiSelect } from 'enquirer';
+// TODO, MultiSelect not typed, atm
 
 const prisma = new PrismaClient();
 
@@ -15,11 +16,9 @@ const main = async () => {
   //   result(names) {
   //     console.log(names);
   //     console.log(this.map(names));
-
   //     return this.map(names);
   //   },
   // });
-
   // const answer = await prompt.run();
   // console.log(answer);
 };

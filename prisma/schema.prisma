@@ -20,6 +20,7 @@ model Page {
   chapterCoverPage Chapter? @relation("chapterCoverPage")
 
   @@unique([chapterId, number])
+  @@unique([chapterId, name])
 }
 
 model Chapter {

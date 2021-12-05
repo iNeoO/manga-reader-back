@@ -8,12 +8,15 @@ const [, , commands, ...params] = process.argv;
 
 switch (commands) {
   case 'add':
-    const [name, path] = params;
-    if (!name || !path) {
-      console.log('help');
-      break;
-    }
-    add(name, path);
+    (() => {
+      const [name, path] = params;
+      if (!name || !path) {
+        console.log('help');
+        return;
+      }
+      add(name, path);
+      return;
+    })();
     break;
   case 'createuser':
     createuser();
@@ -22,7 +25,15 @@ switch (commands) {
     purge();
     break;
   case 'serialize':
-    serialize(name, path);
+    (() => {
+      const [path] = params;
+      if (!path) {
+        console.log('help');
+        return;
+      }
+      serialize(path);
+      return;
+    })();
     break;
   case 'delete':
     deleteManga();

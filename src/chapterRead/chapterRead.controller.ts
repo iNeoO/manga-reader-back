@@ -5,13 +5,16 @@ import {
   Delete,
   Request,
   UseGuards,
+  Get,
+  Param,
 } from '@nestjs/common';
 import { ChapterReadService } from './chapterRead.service';
 import { CreateChapterReadDto } from './dto/create-chapterRead.dto';
-import { DeleteChapterRead } from './type/chapterRead.type';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ChapterService } from '../chapter/chapter.service';
 import { ChapterFormated } from '../chapter/type/chapter.type';
+
+import { ChapterReadFormated } from './type/chapterRead.type';
 
 @Controller('chapters-read')
 export class ChapterReadController {
@@ -19,6 +22,12 @@ export class ChapterReadController {
     private chapterReadService: ChapterReadService,
     private chapterService: ChapterService,
   ) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async getAll(@Request() req): Promise<ChapterReadFormated[]> {
+    return this.chapterReadService.getAllChaptersRead(req.user.userId);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -39,17 +48,14 @@ export class ChapterReadController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete()
+  @Delete(':id')
   async delete(
     @Request() req,
-    @Body() createChapterRead: DeleteChapterRead,
+    @Param('id') chapterId: string,
   ): Promise<ChapterFormated> {
-    await this.chapterReadService.deleteChapterRead(
-      createChapterRead.chapterId,
-      req.user.userId,
-    );
+    await this.chapterReadService.deleteChapterRead(chapterId, req.user.userId);
     return this.chapterService.getChapter(req.user.userId, {
-      id: createChapterRead.chapterId,
+      id: chapterId,
     });
   }
 }

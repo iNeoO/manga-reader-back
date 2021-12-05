@@ -9,14 +9,20 @@ const main = async (name: string, path: string) => {
     select: { id: true },
   });
 
-  const chapters = await readdir(path);
+  const chapters = (await readdir(path)).sort(
+    (a: string, b: string) =>
+      Number(a.match(/(\d+)/g)[0]) - Number(b.match(/(\d+)/g)[0]),
+  );
   const directoryName = path.split('/').pop();
   for (const [chapterIndex, chapterName] of chapters.entries()) {
     const chapter = await prisma.chapter.create({
       data: { name: chapterName, mangaId: manga.id, number: chapterIndex + 1 },
       select: { id: true },
     });
-    const pages = await readdir(`${path}/${chapterName}`);
+    const pages = (await readdir(`${path}/${chapterName}`)).sort(
+      (a: string, b: string) =>
+        Number(a.match(/(\d+)/g)[0]) - Number(b.match(/(\d+)/g)[0]),
+    );
     for (const [pageIndex, pageName] of pages.entries()) {
       const pageCreated = await prisma.page.create({
         data: {
@@ -39,6 +45,7 @@ const main = async (name: string, path: string) => {
         });
       }
     }
+    console.log(`chapter: ${chapterName}, nb: ${chapterIndex + 1} added!`);
   }
 };
 

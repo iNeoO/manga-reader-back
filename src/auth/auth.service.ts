@@ -8,7 +8,7 @@ import { PrismaService } from '../prisma.service';
 export class AuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
-  async validateUser(email: string, password: string): Promise<User> {
+  async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.prisma.user.findFirst({
       where: {
         email,
@@ -19,6 +19,16 @@ export class AuthService {
     }
 
     const match = await bcrypt.compare(password, user.password);
+    if (match) {
+      this.prisma.user.update({
+        where: {
+          email,
+        },
+        data: {
+          lastLoginOn: new Date(),
+        },
+      });
+    }
     return match ? user : null;
   }
 
