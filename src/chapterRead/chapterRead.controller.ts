@@ -15,6 +15,7 @@ import { ChapterService } from '../chapter/chapter.service';
 import { ChapterFormated } from '../chapter/type/chapter.type';
 
 import { ChapterReadFormated } from './type/chapterRead.type';
+import { ChapterRead } from '@prisma/client';
 
 @Controller('chapters-read')
 export class ChapterReadController {
@@ -52,10 +53,10 @@ export class ChapterReadController {
   async delete(
     @Request() req,
     @Param('id') chapterId: string,
-  ): Promise<ChapterFormated> {
-    await this.chapterReadService.deleteChapterRead(chapterId, req.user.userId);
-    return this.chapterService.getChapter(req.user.userId, {
-      id: chapterId,
-    });
+  ): Promise<ChapterRead> {
+    return await this.chapterReadService.deleteChapterRead(
+      chapterId,
+      req.user.userId,
+    );
   }
 }
