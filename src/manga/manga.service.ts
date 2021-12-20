@@ -20,6 +20,9 @@ export class MangaService {
           },
         },
       },
+      orderBy: {
+        name: 'asc',
+      },
     });
   }
 
