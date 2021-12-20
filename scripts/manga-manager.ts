@@ -3,6 +3,8 @@ import purge from './manga/purge';
 import createuser from './manga/createuser';
 import serialize from './manga/serialize';
 import deleteManga from './manga/delete';
+import listMangas from './manga/list';
+import infoManga from './manga/info';
 
 const [, , commands, ...params] = process.argv;
 
@@ -17,6 +19,13 @@ switch (commands) {
       add(name, path);
       return;
     })();
+    break;
+  case 'info':
+    const [infoMangaId] = params;
+    infoManga(infoMangaId);
+    break;
+  case 'list':
+    listMangas();
     break;
   case 'createuser':
     createuser();
@@ -36,7 +45,8 @@ switch (commands) {
     })();
     break;
   case 'delete':
-    deleteManga();
+    const [deleteMangaId] = params;
+    deleteManga(deleteMangaId);
     break;
   default:
     console.log('help');

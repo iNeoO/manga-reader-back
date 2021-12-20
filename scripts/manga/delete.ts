@@ -1,30 +1,32 @@
 import { PrismaClient } from '@prisma/client';
-// import { MultiSelect } from 'enquirer';
-// TODO, MultiSelect not typed, atm
 
 const prisma = new PrismaClient();
 
-const main = async () => {
-  // const mangas = await prisma.manga.findMany();
-  // const prompt = new MultiSelect({
-  //   name: 'value',
-  //   message: 'Pick manga to delete',
-  //   choices: mangas.map((manga) => ({
-  //     name: manga.name,
-  //     value: manga.id,
-  //   })),
-  //   result(names) {
-  //     console.log(names);
-  //     console.log(this.map(names));
-  //     return this.map(names);
-  //   },
-  // });
-  // const answer = await prompt.run();
-  // console.log(answer);
+const main = async (id) => {
+  const chapters = await prisma.chapter.findMany({
+    where: { mangaId: id },
+  });
+  for (const chapter of chapters) {
+    const chapterReadDeleted = await prisma.chapterRead.deleteMany({
+      where: { chapterId: chapter.id },
+    });
+    if (chapterReadDeleted.count) {
+      console.log(`Deleted chapterRead: ${chapter.name}`);
+    }
+    const deletedPages = await prisma.page.deleteMany({
+      where: { chapterId: chapter.id },
+    });
+    await prisma.chapter.delete({ where: { id: chapter.id } });
+    console.log(
+      `Deleted chapter: ${chapter.name} with ${deletedPages.count} pages`,
+    );
+  }
+  const deletedManga = await prisma.manga.delete({ where: { id } });
+  console.log(`Deleted manga: ${deletedManga.name}`);
 };
 
-export default () => {
-  main()
+export default (id) => {
+  main(id)
     .catch((e) => {
       throw e;
     })
