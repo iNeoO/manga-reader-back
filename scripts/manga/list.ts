@@ -4,6 +4,9 @@ export default async () => {
   const prisma = new PrismaClient();
   async function main() {
     const mangas = await prisma.manga.findMany({
+      orderBy: {
+        name: 'asc',
+      },
       include: {
         _count: {
           select: {

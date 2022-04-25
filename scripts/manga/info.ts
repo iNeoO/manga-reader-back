@@ -5,6 +5,9 @@ export default async (id) => {
   async function main() {
     const manga = await prisma.chapter.findMany({
       where: { mangaId: id },
+      orderBy: {
+        number: 'asc',
+      },     
       include: {
         _count: {
           select: {
